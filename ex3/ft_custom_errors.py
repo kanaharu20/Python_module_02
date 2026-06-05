@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 
 class GardenError(Exception):
-    def __init__(self, message: str = "Unkown plant error") -> None:
-        self._message = message
+    def __init__(self, message: str = "Unknown garden error") -> None:
+        self.args = (message,)
 
-    def __str__(self) -> str:
-        return self._message
 
 class PlantError(GardenError):
-    pass
+    def __init__(self, message: str = "Unknown plant error") -> None:
+        self.args = (message,)
+
 
 class WaterError(GardenError):
-    pass
+    def __init__(self, message: str = "Unknown water error") -> None:
+        self.args = (message,)
 
 
 def ft_custom_errors() -> None:
@@ -27,20 +28,23 @@ def ft_custom_errors() -> None:
     print("Testing WaterError...")
     try:
         raise WaterError("Not enough water in the tank!")
-    except  WaterError as e:
+    except WaterError as e:
         print(f"Caught WaterError: {e}\n")
 
     print("Testing catching all garden errors...")
 
-    Exces = [PlantError(f"The {plant_name} plant is wilting!"), WaterError("Not enough water in the tank!")]
+    errors = [
+        PlantError(f"The {plant_name} plant is wilting!"),
+        WaterError("Not enough water in the tank!")
+        ]
 
-    for exce in Exces:
+    for error in errors:
         try:
-            raise exce
+            raise error
         except GardenError as e:
             print(f"Caught GardenError: {e}")
 
-    print(f"\nAll custom error types work correctly!")
+    print("\nAll custom error types work correctly!")
 
 
 if __name__ == "__main__":
